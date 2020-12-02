@@ -1,7 +1,5 @@
-
-//For convenience, a function that immediately creates an element in the DOM.
-function create(element){
-    return document.createElement(element);
+function createElements(...elements){
+    return elements.map(el => document.createElement(el));
 }
 
 //For convenience, a function is used that immediately adds the class to the element.
@@ -11,10 +9,9 @@ function addClass(element, ...classL){
 
 //The main container where our attachment will be recorded after app initialization.
 function createContainer(titleHeader){
-    const wrapper = create('div');
-    const wrapperHeader = create('h1');
+    const [wrapper, wrapperHeader, list] = createElements('div', 'h1', 'ul');
 
-    wrapper.append(wrapperHeader, initFormTodo());
+    wrapper.append(wrapperHeader, initFormTodo(), list);
 
     addClass(wrapper, 'container');
     addClass(wrapperHeader, 'mb-3', 'title');
@@ -23,34 +20,9 @@ function createContainer(titleHeader){
     return wrapper
 }
 
-//The function will create form elements
-function  createElForm(){
-    const form  = create('form');
-    const input = create('input');
-    const textArea = create('textarea');
-    const submit = create('button');
-
-    return { form, input, textArea, submit };
-}
-
-//The function will create list elements
-function createElList(){
-    const div = create('div');
-    const ul = create('ul');
-    const li = create('li');
-
-    return { div, ul, li };
-}
-
-function getList(){
-    const { ul } = createElList();
-    return ul
-}
-
 //Creating a form that we will use as initialization in the to-do list DOM.
 function initFormTodo(){
-    const formList = createElForm();
-    const { form, input, textArea, submit } = formList;
+    const [ form, input, textArea, submit ] = createElements('form', 'input', 'textarea', 'button');
 
     addClass(form, 'form-group', 'form');
     addClass(input, 'form-control', 'mb-4', 'form__input');
@@ -63,13 +35,19 @@ function initFormTodo(){
     textArea.placeholder = 'Описание';
 
     form.append(input, textArea, submit);
+
     return form;
 }
 
-function getListItem(value){
-    const { li } = createElList();
+function initList(parent, value){
+    const [ li ] = createElements('li');
+    const ul = parent.children[2];
+
     li.textContent = value;
-    return li;
+
+    ul.append(li);
+
+    return ul;
 }
 
 function addTodoListItem(e, container, form){
@@ -79,17 +57,8 @@ function addTodoListItem(e, container, form){
     const textarea = form.children[1];
 
     if (text.test(input.value)){
-
-        //Active
-        // const ul = getList();
-        // const li = getListItem(input.value);
-        //
-        // ul.append(li);
-        // container.append(ul);
-
-        //Test
-         const li = getListItem(input.value);
-         container.append(getList());
+        const list = initList(container, input.value);
+        container.append(list);
     }
 }
 
