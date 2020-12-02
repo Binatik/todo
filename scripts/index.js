@@ -14,7 +14,7 @@ function createContainer(titleHeader){
     const wrapper = create('div');
     const wrapperHeader = create('h1');
 
-    wrapper.append(wrapperHeader, initFormTodo(), getList());
+    wrapper.append(wrapperHeader, initFormTodo());
 
     addClass(wrapper, 'container');
     addClass(wrapperHeader, 'mb-3', 'title');
@@ -66,18 +66,27 @@ function initFormTodo(){
     return form;
 }
 
-function addTodoListItem(e, form){
+function getListItem(value){
+    const { li } = createElList();
+    li.textContent = value;
+    return li;
+}
+
+function addTodoListItem(e, container, form){
     e.preventDefault();
     const { text } = getReg();
     const input = form.children[0];
     const textarea = form.children[1];
 
     if (text.test(input.value)){
-        const { li } = createElList();
-        const ul = getList();
-        ul.append(li);
-        li.textContent = input.value;
-        console.log(ul);
+        // const ul = getList();
+        // const li = getListItem(input.value);
+        //
+        // ul.append(li);
+        // container.append(ul);
+
+         const li = getListItem(input.value);
+         container.append(getList());
     }
 }
 
@@ -93,7 +102,7 @@ function initTodo(id, title){
    const container = createContainer(title);
    const formSubmit = container.children[1];
 
-   formSubmit.addEventListener('submit', (event) => addTodoListItem(event, formSubmit));
+   formSubmit.addEventListener('submit', (event) => addTodoListItem(event, container, formSubmit));
 
    app.append(container);
 }
