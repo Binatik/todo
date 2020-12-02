@@ -1,3 +1,5 @@
+let number = 0;
+
 function createElements(...elements){
     return elements.map(el => document.createElement(el));
 }
@@ -5,6 +7,10 @@ function createElements(...elements){
 //For convenience, a function is used that immediately adds the class to the element.
 function addClass(element, ...classL){
     return element.classList.add(...classL);
+}
+
+function remClass(element, ...classL){
+    return element.classList.remove(...classL);
 }
 
 //The main container where our attachment will be recorded after app initialization.
@@ -40,16 +46,22 @@ function initFormTodo(){
 }
 
 //Initializing a list in the DOM.
-function initList(parent, value){
-    const [ li ] = createElements('li');
+function initList(parent, ...text){
+    const [ li, h2, h3, p ] = createElements('li', 'h2', 'h3', 'p');
     const ul = parent.children[2];
 
-    addClass(ul, 'list-group');
-    addClass(li, 'list-group-item', 'mb-4', 'h3', 'active');
 
-    li.textContent = value;
+    addClass(ul, 'list-group');
+    addClass(li, 'list-group-item', 'mb-4', 'active');
+    addClass(h2, 'title', 'mb-3');
+
+    h2.textContent = `ДЕЛО № ${++number}`;
+    h3.textContent = text[0];
+    p.textContent = text[1];
+
 
     ul.append(li);
+    li.append(h2, h3, p);
 
     return ul;
 }
@@ -61,10 +73,19 @@ function getWriteList(e, container, form){
     const input = form.children[0];
     const textarea = form.children[1];
 
-    if (text.test(input.value)){
-        const list = initList(container, input.value);
+    remClass(input, 'is-valid');
+    remClass(textarea, 'is-valid');
+    remClass(input, 'is-invalid');
+    remClass(textarea, 'is-invalid');
+
+    if (text.test(input.value) && text.test(textarea.value)){
+        const list = initList(container, input.value, textarea.value);
         container.append(list);
         form.reset();
+    }
+    else {
+        text.test(input.value) ? addClass(input, 'is-valid') : addClass(input, 'is-invalid');
+        text.test(textarea.value) ? addClass(textarea, 'is-valid') : addClass(textarea, 'is-invalid');
     }
 }
 
