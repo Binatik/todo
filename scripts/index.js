@@ -14,7 +14,7 @@ function createContainer(titleHeader){
     const wrapper = create('div');
     const wrapperHeader = create('h1');
 
-    wrapper.append(wrapperHeader, initFormTodo());
+    wrapper.append(wrapperHeader, initFormTodo(), getList());
 
     addClass(wrapper, 'container');
     addClass(wrapperHeader, 'mb-3', 'title');
@@ -42,23 +42,9 @@ function createElList(){
     return { div, ul, li };
 }
 
-//Building our list into a ready-made one
-function initList(){
-    const list = createElList()
-
-    const { div, ul } = list;
-
-    div.append(ul);
-
-    return ul;
-}
-
-
-function initItem(value){
-    const { li } = createElList();
-    li.textContent = value;
-    console.log(li.textContent = value)
-    return li;
+function getList(){
+    const { ul } = createElList();
+    return ul
 }
 
 //Creating a form that we will use as initialization in the to-do list DOM.
@@ -80,27 +66,18 @@ function initFormTodo(){
     return form;
 }
 
-function addTodoList(e, form){
+function addTodoListItem(e, form){
     e.preventDefault();
+    const { text } = getReg();
     const input = form.children[0];
     const textarea = form.children[1];
 
-    verifyValidity(e, input, textarea);
-}
-
-function verifyValidity(e, ...elementsForm){
-    const [ input, textarea ] = elementsForm;
-    const { text } = getReg();
-    const parent = input.parentElement.parentElement;
-
     if (text.test(input.value)){
-        console.log('еу')
-        console.log(initItem(input.value))
-        initList().append(initItem(input.value))
-    }
-
-    else {
-
+        const { li } = createElList();
+        const ul = getList();
+        ul.append(li);
+        li.textContent = input.value;
+        console.log(ul);
     }
 }
 
@@ -116,7 +93,7 @@ function initTodo(id, title){
    const container = createContainer(title);
    const formSubmit = container.children[1];
 
-   formSubmit.addEventListener('submit', (event) => addTodoList(event, formSubmit));
+   formSubmit.addEventListener('submit', (event) => addTodoListItem(event, formSubmit));
 
    app.append(container);
 }
