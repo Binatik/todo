@@ -47,21 +47,23 @@ function initFormTodo(){
 
 //Initializing a list in the DOM.
 function initList(parent, ...text){
-    const [ li, h2, h3, p ] = createElements('li', 'h2', 'h3', 'p');
+    const [ li, h2, h3, p1, p2 ] = createElements('li', 'h2', 'h3', 'p', 'p');
     const ul = parent.children[2];
 
 
     addClass(ul, 'list-group');
     addClass(li, 'list-group-item', 'mb-4', 'active');
     addClass(h2, 'title', 'mb-3');
+    addClass(p2, 'text-dark', 'mb-1', 'text-right', 'h4');
 
     h2.textContent = `ДЕЛО № ${++number}`;
     h3.textContent = text[0];
-    p.textContent = text[1];
+    p1.textContent = text[1];
+    p2.textContent = `ОТ. ${new Date().toLocaleDateString()}`;
 
 
     ul.append(li);
-    li.append(h2, h3, p);
+    li.append(h2, h3, p1, p2);
 
     return ul;
 }
