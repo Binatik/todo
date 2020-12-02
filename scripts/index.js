@@ -79,12 +79,15 @@ function addTodoListItem(e, container, form){
     const textarea = form.children[1];
 
     if (text.test(input.value)){
+
+        //Active
         // const ul = getList();
         // const li = getListItem(input.value);
         //
         // ul.append(li);
         // container.append(ul);
 
+        //Test
          const li = getListItem(input.value);
          container.append(getList());
     }
