@@ -44,6 +44,9 @@ function initList(parent, value){
     const [ li ] = createElements('li');
     const ul = parent.children[2];
 
+    addClass(ul, 'list-group');
+    addClass(li, 'list-group-item', 'mb-4', 'h3', 'active');
+
     li.textContent = value;
 
     ul.append(li);
