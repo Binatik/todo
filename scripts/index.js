@@ -61,6 +61,7 @@ function getWriteList(e, container, form){
     if (text.test(input.value)){
         const list = initList(container, input.value);
         container.append(list);
+        form.reset();
     }
 }
 
