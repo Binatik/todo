@@ -39,6 +39,7 @@ function initFormTodo(){
     return form;
 }
 
+//Initializing a list in the DOM.
 function initList(parent, value){
     const [ li ] = createElements('li');
     const ul = parent.children[2];
@@ -50,7 +51,8 @@ function initList(parent, value){
     return ul;
 }
 
-function addTodoListItem(e, container, form){
+//We add a case to our list if the check was successful.
+function getWriteList(e, container, form){
     e.preventDefault();
     const { text } = getReg();
     const input = form.children[0];
@@ -74,7 +76,7 @@ function initTodo(id, title){
    const container = createContainer(title);
    const formSubmit = container.children[1];
 
-   formSubmit.addEventListener('submit', (event) => addTodoListItem(event, container, formSubmit));
+   formSubmit.addEventListener('submit', (event) => getWriteList(event, container, formSubmit));
 
    app.append(container);
 }
