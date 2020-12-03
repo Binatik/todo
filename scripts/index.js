@@ -1,5 +1,9 @@
 let number = 0;
 
+const getReg = {
+    text: /[a-zа-яё]/i
+}
+
 function createElements(...elements){
     return elements.map(el => document.createElement(el));
 }
@@ -17,7 +21,7 @@ function remClass(element, ...classL){
 function createContainer(titleHeader){
     const [wrapper, wrapperHeader, list] = createElements('div', 'h1', 'ul');
 
-    wrapper.append(wrapperHeader, initFormTodo(), list);
+    wrapper.append(wrapperHeader, createFormTodo(), list);
 
     addClass(wrapper, 'container');
     addClass(wrapperHeader, 'mb-3', 'title');
@@ -27,7 +31,7 @@ function createContainer(titleHeader){
 }
 
 //Creating a form that we will use as initialization in the to-do list DOM.
-function initFormTodo(){
+function createFormTodo(){
     const [ form, input, textArea, submit ] = createElements('form', 'input', 'textarea', 'button');
 
     addClass(form, 'form-group', 'form');
@@ -46,7 +50,7 @@ function initFormTodo(){
 }
 
 //Initializing a list in the DOM.
-function initList(parent, ...text){
+function createList(parent, ...text){
     const [ li, h2, h3, p1, p2 ] = createElements('li', 'h2', 'h3', 'p', 'p');
     const ul = parent.children[2];
 
@@ -69,9 +73,9 @@ function initList(parent, ...text){
 }
 
 //We add a case to our list if the check was successful.
-function getWriteList(e, container, form){
+function onSubmit(e, container, form){
     e.preventDefault();
-    const { text } = getReg();
+    const { text } = getReg;
     const input = form.children[0];
     const textarea = form.children[1];
 
@@ -81,7 +85,7 @@ function getWriteList(e, container, form){
     remClass(textarea, 'is-invalid');
 
     if (text.test(input.value) && text.test(textarea.value)){
-        const list = initList(container, input.value, textarea.value);
+        const list = createList(container, input.value, textarea.value);
         container.append(list);
         form.reset();
     }
@@ -91,21 +95,17 @@ function getWriteList(e, container, form){
     }
 }
 
-function getReg(){
-    return {
-        text: /[a-zа-яё]/i
-    }
-}
-
 //Initializing a component in the DOM
 function initTodo(id, title){
    const app = document.getElementById(id);
    const container = createContainer(title);
    const formSubmit = container.children[1];
 
-   formSubmit.addEventListener('submit', (event) => getWriteList(event, container, formSubmit));
+   formSubmit.addEventListener('submit', (event) => onSubmit(event, container, formSubmit));
 
    app.append(container);
+
+   return app;
 }
 
 initTodo('todo', 'Дела');
